@@ -1,0 +1,21 @@
+{
+    "name": "tokena",
+    "version": "0.0.1",
+    "scripts": {
+        "clean": "rm -rf build/",
+        "compile": "truffle compile",
+        "test": "truffle test"
+    },
+    "dependencies": {
+        "openzeppelin-solidity": "2.3.0"
+    },
+    "devDependencies": {
+        "bn.js": "^5.0.0",
+        "bn-chai": "^1.0.1",
+        "chai": "^4.2.0",
+        "solc": "^0.5.11",
+        "truffle": "^5.0.38",
+        "truffle-assertions": "^0.9.1",
+        "truffle-hdwallet-provider": "^1.0.17"
+    }
+}
