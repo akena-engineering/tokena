@@ -1,4 +1,5 @@
-pragma solidity ^0.5.11;
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
 
 import "./Token.sol";
 
@@ -7,10 +8,14 @@ contract Market {
 
     address token;
 
-    event TokenBought(address buyer, uint256 amount);
-    event TokenSold(address seller, uint256 amount, address beneficiary);
+    event TokenBought(address indexed buyer, uint256 amount);
+    event TokenSold(
+        address indexed seller,
+        address indexed beneficiary,
+        uint256 amount
+    );
 
-    constructor(address _token) public {
+    constructor(address _token) {
         token = _token;
     }
 
@@ -18,7 +23,10 @@ contract Market {
     /// @dev Requires value of the transaction to be at least the minimum amount.
     ///      Mints token and emits an event.
     function buy() external payable {
-        require(msg.value >= minimumAmount, 'transaction value is less than minimum amount');
+        require(
+            msg.value >= minimumAmount,
+            "transaction value is less than minimum amount"
+        );
 
         Token(token).mint(msg.sender, msg.value);
 
@@ -31,13 +39,13 @@ contract Market {
     function sell(uint256 _amount, address payable _beneficiary) external {
         require(
             Token(token).balanceOf(msg.sender) >= _amount,
-            'insufficient token balance'
+            "insufficient token balance"
         );
 
-        Token(token).burnFrom(msg.sender, _amount);
+        Token(token).burn(msg.sender, _amount);
 
         _beneficiary.transfer(_amount);
 
-        emit TokenSold(msg.sender, _amount, _beneficiary);
+        emit TokenSold(msg.sender, _beneficiary, _amount);
     }
 }

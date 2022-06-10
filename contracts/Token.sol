@@ -1,10 +1,13 @@
-pragma solidity ^0.5.11;
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
 
-import "openzeppelin-solidity/contracts/token/ERC20/ERC20.sol";
-import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract Token is ERC20, Ownable {
     address market;
+
+    constructor(string memory name, string memory symbol) ERC20(name, symbol) {}
 
     function setMarket(address _market) external onlyOwner {
         market = _market;
@@ -14,7 +17,11 @@ contract Token is ERC20, Ownable {
     ///                  Uses the internal _mint function
     /// @param _account  The account that will receive the created tokens.
     /// @param _amount   The amount of tokens that will be created.
-    function mint(address _account, uint256 _amount) public onlyMarket returns (bool){
+    function mint(address _account, uint256 _amount)
+        public
+        onlyMarket
+        returns (bool)
+    {
         _mint(_account, _amount);
         return true;
     }
@@ -24,11 +31,11 @@ contract Token is ERC20, Ownable {
     ///                  Uses the internal _burn function.
     /// @param _account  The account whose tokens will be burnt.
     /// @param _amount   The amount of tokens that will be burnt.
-    function burnFrom(address _account, uint256 _amount) public onlyMarket {
-        _burnFrom(_account, _amount);
+    function burn(address _account, uint256 _amount) public onlyMarket {
+        _burn(_account, _amount);
     }
 
-    modifier onlyMarket(){
+    modifier onlyMarket() {
         require(msg.sender == market, "caller is not market contract");
         _;
     }
