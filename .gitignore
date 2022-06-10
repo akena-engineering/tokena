@@ -1,6 +1,7 @@
-.vscode
-
+.vscode/
 build/
-node_modules
-
-.secret
+cache/
+deployments/
+node_modules/
+typechain/
+export.json
